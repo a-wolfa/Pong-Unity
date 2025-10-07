@@ -24,8 +24,16 @@ public class BallController : MonoBehaviour
 
     private void Start()
     {
-        _rb.linearVelocity = RandomDirection();
+        _rb.linearVelocity = RandomDirection() * speed;
         RandomYPosition();
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        var normal = other.contacts[0].normal;
+        
+        _rb.linearVelocity = Vector2.Reflect(_rb.linearVelocity, normal);
+        _rb.linearVelocity = _rb.linearVelocity.normalized * speed;
     }
 
     private Vector2 RandomDirection()
